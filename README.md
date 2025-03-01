@@ -1,1 +1,2 @@
 # HackNova
+MedicalCompanion Web app
