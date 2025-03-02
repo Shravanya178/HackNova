@@ -1,72 +1,280 @@
-import React from "react";
-import { Search, FileText } from "lucide-react";
+import React, { useState } from 'react';
+import { MapPin, Phone, User, Calendar, Home, Activity, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-const LogsPage = ({ logs = [] }) => {
+const LogsPage = () => {
+  // This would come from your API or state management in a real app
+  const [profile, setProfile] = useState({
+    name: 'John Doe',
+    age: 42,
+    gender: 'Male',
+    bloodType: 'O+',
+    weight: 180,
+    height: 175,
+    allergies: 'Penicillin, Peanuts',
+    healthIssues: 'Hypertension, Type 2 Diabetes',
+    currentMedication: 'Metformin 500mg (twice daily), Lisinopril 10mg (once daily)',
+    doctorName: 'Dr. Sarah Johnson',
+    doctorContact: '(123) 555-4321',
+    caretaker: 'Mary Doe',
+    sosContact: '(123) 456-7890',
+    nearestPharmacy: 'City Pharmacy, 0.5 miles away'
+  });
+
+  const handleChange = (field, value) => {
+    setProfile({...profile, [field]: value});
+  };
+
   return (
-    <div className="space-y-6">
-      <h2 className="text-xl font-semibold text-blue-800">Medication Logs</h2>
-
-      {/* Search & Filter */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-blue-100">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search by medicine or date..."
-            className="w-full p-2 pl-8 border border-gray-300 rounded-md"
-          />
-          <Search size={16} className="absolute left-2 top-3 text-gray-400" />
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-blue-600 text-white shadow-md p-4">
+        <div className="container mx-auto">
+          <h1 className="text-2xl font-bold">Medical Profile</h1>
         </div>
-      </div>
+      </header>
 
-      {/* Logs Table */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-blue-100 overflow-x-auto">
-        <table className="min-w-full">
-          <thead>
-            <tr className="bg-blue-50">
-              <th className="py-2 px-3 text-left text-sm font-medium text-blue-800">
-                Date & Time
-              </th>
-              <th className="py-2 px-3 text-left text-sm font-medium text-blue-800">
-                Medicine
-              </th>
-              <th className="py-2 px-3 text-left text-sm font-medium text-blue-800">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {logs.map((log) => (
-              <tr key={log.id} className="border-b border-blue-50">
-                <td className="py-2 px-3 text-sm">
-                  {log.date} • {log.time}
-                </td>
-                <td className="py-2 px-3 text-sm">{log.medicine}</td>
-                <td className="py-2 px-3 text-sm">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      log.status === "Taken"
-                        ? "bg-green-100 text-green-800"
-                        : log.status === "Missed"
-                        ? "bg-red-100 text-red-800"
-                        : "bg-yellow-100 text-yellow-800"
-                    }`}
+      {/* Profile Card */}
+      <main className="container mx-auto p-4">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          {/* User Info Section */}
+          <div className="p-6 flex flex-col md:flex-row items-start gap-6">
+            {/* Profile Picture */}
+            <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-300">
+              <User size={40} className="text-blue-500" />
+            </div>
+            
+            {/* Basic Info */}
+            <div className="flex-grow space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="border border-gray-300 rounded-md p-2">
+                  <label className="block text-sm text-gray-600">Full Name</label>
+                  <input 
+                    type="text" 
+                    value={profile.name}
+                    onChange={(e) => handleChange('name', e.target.value)}
+                    className="w-full focus:outline-none text-gray-800 font-medium"
+                  />
+                </div>
+                
+                <div className="border border-gray-300 rounded-md p-2">
+                  <label className="block text-sm text-gray-600">Gender</label>
+                  <select 
+                    value={profile.gender}
+                    onChange={(e) => handleChange('gender', e.target.value)}
+                    className="w-full focus:outline-none text-gray-800 font-medium bg-white"
                   >
-                    {log.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="border border-gray-300 rounded-md p-2">
+                  <label className="block text-sm text-gray-600">Age</label>
+                  <input 
+                    type="number" 
+                    value={profile.age}
+                    onChange={(e) => handleChange('age', e.target.value)}
+                    className="w-full focus:outline-none text-gray-800 font-medium"
+                  />
+                </div>
+                
+                <div className="border border-gray-300 rounded-md p-2">
+                  <label className="block text-sm text-gray-600">Blood Type</label>
+                  <select
+                    value={profile.bloodType}
+                    onChange={(e) => handleChange('bloodType', e.target.value)}
+                    className="w-full focus:outline-none text-gray-800 font-medium bg-white"
+                  >
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
+                </div>
+                
+                <div className="border border-gray-300 rounded-md p-2 flex gap-2">
+                  <div className="flex-1">
+                    <label className="block text-sm text-gray-600">Weight (lbs)</label>
+                    <input 
+                      type="number" 
+                      value={profile.weight}
+                      onChange={(e) => handleChange('weight', e.target.value)}
+                      className="w-full focus:outline-none text-gray-800 font-medium"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm text-gray-600">Height (cm)</label>
+                    <input 
+                      type="number" 
+                      value={profile.height}
+                      onChange={(e) => handleChange('height', e.target.value)}
+                      className="w-full focus:outline-none text-gray-800 font-medium"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      {/* Export Options */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-blue-100">
-        <button className="w-full bg-blue-600 text-white py-2 rounded-md flex items-center justify-center">
-          <FileText size={16} className="mr-2" />
-          Export to Google Sheets
-        </button>
-      </div>
+          {/* Health Information Section */}
+          <div className="px-6 pb-3">
+            <h3 className="font-medium text-gray-800 mb-2 flex items-center">
+              <Activity size={18} className="text-blue-500 mr-2" />
+              Health Information
+            </h3>
+            
+            <div className="space-y-3">
+              <div className="border border-gray-300 rounded-md p-3">
+                <label className="block text-sm text-gray-600 mb-1">Allergies:</label>
+                <textarea 
+                  value={profile.allergies}
+                  onChange={(e) => handleChange('allergies', e.target.value)}
+                  className="w-full focus:outline-none text-gray-800"
+                  rows={2}
+                  placeholder="List medication allergies and other allergies"
+                />
+              </div>
+              
+              <div className="border border-gray-300 rounded-md p-3">
+                <label className="block text-sm text-gray-600 mb-1">Current Health Issues:</label>
+                <textarea 
+                  value={profile.healthIssues}
+                  onChange={(e) => handleChange('healthIssues', e.target.value)}
+                  className="w-full focus:outline-none text-gray-800"
+                  rows={2}
+                  placeholder="Chronic diseases, recent illnesses, etc."
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Current Medication Section */}
+          <div className="px-6 pb-3">
+            <h3 className="font-medium text-gray-800 mb-2 flex items-center">
+              <Heart size={18} className="text-blue-500 mr-2" />
+              Medication Information
+            </h3>
+            
+            <div className="border border-gray-300 rounded-md p-3">
+              <label className="block text-sm text-gray-600 mb-1">Current Medication:</label>
+              <textarea 
+                value={profile.currentMedication}
+                onChange={(e) => handleChange('currentMedication', e.target.value)}
+                className="w-full focus:outline-none text-gray-800"
+                rows={3}
+                placeholder="List with dosage & frequency (e.g., Metformin 500mg twice daily)"
+              />
+            </div>
+          </div>
+
+          {/* Doctor & Emergency Contact Section */}
+          <div className="px-6 pb-6">
+            <div className="border border-gray-300 rounded-md p-3">
+              <h3 className="font-medium text-gray-800 mb-2">Doctor & Emergency Information</h3>
+              
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <span className="text-gray-600 w-40">Doctor's Name:</span>
+                  <input 
+                    type="text" 
+                    value={profile.doctorName}
+                    onChange={(e) => handleChange('doctorName', e.target.value)}
+                    className="flex-grow focus:outline-none text-gray-800"
+                  />
+                </div>
+                
+                <div className="flex items-center">
+                  <span className="text-gray-600 w-40">Doctor's Contact:</span>
+                  <div className="flex items-center flex-grow">
+                    <Phone size={16} className="text-blue-500 mr-2" />
+                    <input 
+                      type="text" 
+                      value={profile.doctorContact}
+                      onChange={(e) => handleChange('doctorContact', e.target.value)}
+                      className="flex-grow focus:outline-none text-gray-800"
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex items-center">
+                  <span className="text-gray-600 w-40">Primary caretaker:</span>
+                  <input 
+                    type="text" 
+                    value={profile.caretaker}
+                    onChange={(e) => handleChange('caretaker', e.target.value)}
+                    className="flex-grow focus:outline-none text-gray-800"
+                  />
+                </div>
+                
+                <div className="flex items-center">
+                  <span className="text-gray-600 w-40">SOS contact:</span>
+                  <div className="flex items-center flex-grow">
+                    <Phone size={16} className="text-blue-500 mr-2" />
+                    <input 
+                      type="text" 
+                      value={profile.sosContact}
+                      onChange={(e) => handleChange('sosContact', e.target.value)}
+                      className="flex-grow focus:outline-none text-gray-800"
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex items-center">
+                  <span className="text-gray-600 w-40">Nearest Pharmacy:</span>
+                  <div className="flex items-center flex-grow">
+                    <MapPin size={16} className="text-blue-500 mr-2" />
+                    <input 
+                      type="text" 
+                      value={profile.nearestPharmacy}
+                      onChange={(e) => handleChange('nearestPharmacy', e.target.value)}
+                      className="flex-grow focus:outline-none text-gray-800"
+                    />
+                    <Link 
+                      to="/pharmacy" 
+                      className="ml-2 text-blue-600 text-sm hover:text-blue-800"
+                    >
+                      Find
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="grid grid-cols-2 divide-x border-t">
+            <Link 
+              to="/dashboard" 
+              className="p-4 text-center text-blue-600 font-medium hover:bg-blue-50 flex items-center justify-center"
+            >
+              <Home size={18} className="mr-2" />
+              Dashboard
+            </Link>
+            <Link 
+              to="/schedule" 
+              className="p-4 text-center text-blue-600 font-medium hover:bg-blue-50 flex items-center justify-center"
+            >
+              <Calendar size={18} className="mr-2" />
+              Schedule
+            </Link>
+          </div>
+        </div>
+        
+        {/* Save Button */}
+        <div className="mt-6 text-center">
+          <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors shadow-md">
+            Save Profile
+          </button>
+        </div>
+      </main>
     </div>
   );
 };
