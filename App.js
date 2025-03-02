@@ -8,6 +8,7 @@ import SchedulePage from './components/SchedulePage';
 import SOSPage from './components/SOSPage';
 import SettingsPage from './components/SettingsPage';
 import LogsPage from './components/LogsPage';
+import HelpPage from './components/HelpPage';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path="/reminder" element={<Reminder/>} />
         <Route path="/schedule" element={<SchedulePage/>} />
         <Route path="/sos" element={<SOSPage/>} />
-        <Route path="/more" element={<more/>} />
+        <Route path="/Help" element={<HelpPage/>} />
         <Route path="/settings" element={<SettingsPage/>} />
         <Route path="/profile" element={<LogsPage/>} />
         <Route path="/privacy" element={<SOSPage/>} />
