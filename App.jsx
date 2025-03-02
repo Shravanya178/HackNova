@@ -16,6 +16,9 @@ import SettingsPage from "./components/SettingsPage";
 import LogsPage from "./components/LogsPage";
 import HelpPage from "./components/HelpPage";
 import NavBar from "./components/NavBar";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import { ProtectedRoute, PublicRoute } from "./components/Routes";
 
 function App() {
   return (
@@ -31,6 +34,22 @@ function App() {
         <Route path="/profile" element={<LogsPage />} />
         <Route path="/privacy" element={<SOSPage />} />
         <Route path="/NavBar" element={<NavBar />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute>
+              <Signup />
+            </PublicRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
