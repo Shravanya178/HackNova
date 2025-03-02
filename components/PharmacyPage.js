@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, CheckCircle, XCircle, Navigation, Phone } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom'; // Import React Router hooks
 
-const PharmacyPage = ({ medicineToFind, navigate, location = {} }) => {
+const PharmacyPage = ({ medicineToFind }) => {
+  const navigate = useNavigate(); // Get the navigate function from React Router
+  const location = useLocation(); // Get the current location from React Router
+  
   const [searchQuery, setSearchQuery] = useState(medicineToFind || '');
   const [selectedPharmacy, setSelectedPharmacy] = useState(null);
   const [pharmacies, setPharmacies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
-  
-  // Default pathname if location is not provided
-  const pathname = location?.pathname || '/pharmacy';
 
   // Sample data - in a real app, this would come from an API
   const pharmacyData = [
@@ -107,40 +108,31 @@ const PharmacyPage = ({ medicineToFind, navigate, location = {} }) => {
     };
   };
 
-  // Handle navigation if navigate is not provided
-  const handleNavigation = (path) => {
-    if (typeof navigate === 'function') {
-      navigate(path);
-    } else {
-      console.log(`Navigation to ${path} requested, but navigate function not provided`);
-    }
-  };
-
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Navigation Bar */}
       <div className="flex justify-between items-center border-2 border-black rounded-lg p-2 m-2 overflow-x-auto">
         <button 
-          className={`font-bold whitespace-nowrap px-2 md:px-4 ${pathname === "/pharmacy" ? "text-blue-600" : ""}`} 
-          onClick={() => handleNavigation("/pharmacy")}
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${location.pathname === "/pharmacy" ? "text-blue-600" : ""}`} 
+          onClick={() => navigate("/pharmacy")}
         >
           Pharmacy
         </button>
         <button 
-          className={`font-bold whitespace-nowrap px-2 md:px-4 ${pathname === "/profile" ? "text-blue-600" : ""}`} 
-          onClick={() => handleNavigation("/profile")}
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${location.pathname === "/profile" ? "text-blue-600" : ""}`} 
+          onClick={() => navigate("/profile")}
         >
           Profile
         </button>
         <button 
-          className={`font-bold whitespace-nowrap px-2 md:px-4 ${pathname === "/settings" ? "text-blue-600" : ""}`} 
-          onClick={() => handleNavigation("/settings")}
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${location.pathname === "/settings" ? "text-blue-600" : ""}`} 
+          onClick={() => navigate("/settings")}
         >
           Settings
         </button>
         <button 
-          className={`font-bold whitespace-nowrap px-2 md:px-4 ${pathname === "/help" ? "text-blue-600" : ""}`} 
-          onClick={() => handleNavigation("/help")}
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${location.pathname === "/help" ? "text-blue-600" : ""}`} 
+          onClick={() => navigate("/help")}
         >
           Help
         </button>
