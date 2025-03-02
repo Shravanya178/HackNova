@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, User, Calendar, Home, Activity, Heart } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const LogsPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   // This would come from your API or state management in a real app
   const [profile, setProfile] = useState({
     name: 'John Doe',
@@ -33,6 +36,42 @@ const LogsPage = () => {
           <h1 className="text-2xl font-bold">Medical Profile</h1>
         </div>
       </header>
+
+      {/* Navigation Bar */}
+      <div className="flex justify-between items-center border-2 border-black rounded-lg p-2 m-2 overflow-x-auto">
+        <button 
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/pharmacy" ? "text-blue-600" : ""
+          }`} 
+          onClick={() => navigate("/pharmacy")}
+        >
+          Pharmacy
+        </button>
+        <button 
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/profile" ? "text-blue-600" : ""
+          }`} 
+          onClick={() => navigate("/profile")}
+        >
+          Profile
+        </button>
+        <button 
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/settings" ? "text-blue-600" : ""
+          }`} 
+          onClick={() => navigate("/settings")}
+        >
+          Settings
+        </button>
+        <button 
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/help" ? "text-blue-600" : ""
+          }`} 
+          onClick={() => navigate("/help")}
+        >
+          Help
+        </button>
+      </div>
 
       {/* Profile Card */}
       <main className="container mx-auto p-4">
