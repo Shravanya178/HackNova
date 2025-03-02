@@ -7,6 +7,7 @@ import {
   Trash2,
   AlertTriangle,
 } from "lucide-react";
+import NavBar from "./NavBar";
 
 const SettingsPage = () => {
   // State for various settings
@@ -47,13 +48,46 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Settings</h1>
+    <div className="bg-white w-full min-h-screen flex flex-col">
+      <div className="flex justify-between items-center border-2 border-black rounded-lg p-2 m-2 overflow-x-auto">
+        <button
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/pharmacy" ? "text-blue-600" : ""
+          }`}
+          onClick={() => navigate("/pharmacy")}
+        >
+          Pharmacy
+        </button>
+        <button
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/profile" ? "text-blue-600" : ""
+          }`}
+          onClick={() => navigate("/profile")}
+        >
+          Profile
+        </button>
+        <button
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/settings" ? "text-blue-600" : ""
+          }`}
+          onClick={() => navigate("/settings")}
+        >
+          Settings
+        </button>
+        <button
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/help" ? "text-blue-600" : ""
+          }`}
+          onClick={() => navigate("/help")}
+        >
+          Help
+        </button>
+      </div>
 
       {/* Language Section */}
       <section className="mb-8">
-        <div className="flex items-center mb-4">
-          <Globe className="mr-2 text-blue-600" size={20} />
+        <div className="flex items-center justify-center mb-4">
+          <Globe className="mr-2 text-blue-600" size={24} />
           <h2 className="text-lg font-semibold text-gray-700">
             Language Selection
           </h2>
@@ -83,12 +117,12 @@ const SettingsPage = () => {
       </section>
 
       {/* Voice Reminders Section */}
-      <section className="mb-8">
-        <div className="flex items-center mb-4">
+      <section className="mb-8 ">
+        <div className="flex items-center justify-center mb-4">
           {voiceReminders ? (
-            <Volume2 className="mr-2 text-blue-600" size={20} />
+            <Volume2 className="mr-2 text-blue-600" size={24} />
           ) : (
-            <VolumeX className="mr-2 text-gray-600" size={20} />
+            <VolumeX className="mr-2 text-gray-600" size={24} />
           )}
           <h2 className="text-lg font-semibold text-gray-700">
             Voice-Based Reminders
@@ -98,10 +132,10 @@ const SettingsPage = () => {
         <div className="bg-gray-50 p-4 rounded-md mb-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-800">
                 Enable voice-based medication reminders
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-600">
                 App will speak reminders aloud instead of just displaying them
               </p>
             </div>
@@ -119,10 +153,10 @@ const SettingsPage = () => {
       </section>
 
       {/* Notification Preferences Section */}
-      <section className="mb-8">
-        <div className="flex items-center mb-4">
-          <Bell className="mr-2 text-blue-600" size={20} />
-          <h2 className="text-lg font-semibold text-gray-700">
+      <section className="mb-8 ">
+        <div className="flex items-center justify-center mb-4">
+          <Bell className="mr-2 text-blue-600" size={24} />
+          <h2 className="text-lg font-semibold text-gray-700 ">
             Notification Preferences
           </h2>
         </div>
@@ -194,7 +228,7 @@ const SettingsPage = () => {
       <section className="mb-4">
         <div className="border border-red-200 bg-red-50 p-4 rounded-md">
           <div className="flex items-center mb-3">
-            <Trash2 className="mr-2 text-red-600" size={20} />
+            <Trash2 className="mr-2 text-red-600" size={24} />
             <h2 className="text-lg font-semibold text-red-700">
               Delete Account
             </h2>
@@ -215,7 +249,7 @@ const SettingsPage = () => {
           ) : (
             <div className="bg-red-100 border border-red-200 p-3 rounded">
               <div className="flex items-start mb-3">
-                <AlertTriangle className="text-red-600 mr-2" size={20} />
+                <AlertTriangle className="text-red-600 mr-2" size={24} />
                 <p className="text-sm text-red-700">
                   Are you sure you want to delete your account?
                 </p>
@@ -238,6 +272,26 @@ const SettingsPage = () => {
           )}
         </div>
       </section>
+      <div className="flex justify-between px-4 pb-4 mt-auto">
+        <button
+          className={`border-2 border-black rounded-lg py-2 px-2 md:px-4 w-1/2 mr-2 font-bold ${
+            location.pathname === "/" || location.pathname === "/dashboard"
+              ? "bg-gray-200"
+              : ""
+          }`}
+          onClick={() => navigate("/dashboard")}
+        >
+          Dashboard
+        </button>
+        <button
+          className={`border-2 border-black rounded-lg py-2 px-2 md:px-4 w-1/2 ml-2 font-bold ${
+            location.pathname === "/schedule" ? "bg-gray-200" : ""
+          }`}
+          onClick={() => navigate("/schedule")}
+        >
+          Schedule
+        </button>
+      </div>
     </div>
   );
 };
