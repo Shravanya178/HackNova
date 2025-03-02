@@ -7,12 +7,28 @@ import {
   Plus,
   Clock,
   Pill,
+  LogOut,
 } from "lucide-react";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
-const DashboardPage = () => {
+const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+
+  // Logout handler
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful, navigate to login page
+        navigate("/login");
+      })
+      .catch((error) => {
+        // An error happened during sign out
+        console.error("Logout error:", error);
+      });
+  };
 
   // Sample medication data
   const medications = [
@@ -93,6 +109,12 @@ const DashboardPage = () => {
           onClick={() => navigate("/help")}
         >
           Help
+        </button>
+        <button
+          className="font-bold whitespace-nowrap px-2 md:px-4 text-red-600"
+          onClick={handleLogout}
+        >
+          Logout
         </button>
       </div>
 
@@ -211,7 +233,7 @@ const DashboardPage = () => {
         </button>
       </div>
 
-      {/* More Menu (preserving original functionality) */}
+      {/* More Menu */}
       {showMoreMenu && (
         <div className="absolute right-4 mt-2 w-48 bg-white border-2 border-black rounded-md shadow-lg z-20">
           <div className="py-1">
@@ -227,12 +249,22 @@ const DashboardPage = () => {
                 label: "Profile",
                 icon: <User size={16} className="mr-2" />,
               },
+              {
+                path: "/login",
+                label: "Logout",
+                icon: <LogOut size={16} className="mr-2" />,
+                onClick: handleLogout,
+              },
             ].map((item) => (
               <button
                 key={item.path}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 onClick={() => {
-                  navigate(item.path);
+                  if (item.onClick) {
+                    item.onClick();
+                  } else {
+                    navigate(item.path);
+                  }
                   setShowMoreMenu(false);
                 }}
               >
@@ -243,8 +275,13 @@ const DashboardPage = () => {
           </div>
         </div>
       )}
+
+      {/* More menu toggle button (missing in original) */}
+      <button className="absolute top-4 right-4 p-2" onClick={toggleMoreMenu}>
+        <MoreHorizontal size={24} />
+      </button>
     </div>
   );
 };
 
-export default DashboardPage;
+export default Dashboard;
