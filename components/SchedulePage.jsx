@@ -1,253 +1,157 @@
 import React, { useState } from "react";
-import { Plus, Edit, Trash2 } from "lucide-react";
 
-const SchedulePage = ({ medications, setMedications }) => {
-  const [showForm, setShowForm] = useState(false);
-  const [editingMed, setEditingMed] = useState(null);
-  const [newMed, setNewMed] = useState({
-    name: "",
-    dosage: "",
-    frequency: "Daily",
-    time: "",
-    enableReminders: true,
-    stock: 30,
-  });
+const medicationData = {
+  "2025-03-01": [
+    { name: "Aspirin", time: "08:00 AM", dosage: "100mg" },
+    { name: "Vitamin D", time: "08:00 AM", dosage: "1000 IU" },
+  ],
+  "2025-03-02": [
+    { name: "Aspirin", time: "08:00 AM", dosage: "100mg" },
+    { name: "Omega-3", time: "12:00 PM", dosage: "1000mg" },
+  ],
+};
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editingMed) {
-      // Update existing medication
-      setMedications(
-        medications.map((med) =>
-          med.id === editingMed ? { ...newMed, id: editingMed } : med
-        )
-      );
-    } else {
-      // Add new medication
-      setMedications([...medications, { ...newMed, id: Date.now() }]);
-    }
-    setShowForm(false);
-    setEditingMed(null);
-    setNewMed({
-      name: "",
-      dosage: "",
-      frequency: "Daily",
-      time: "",
-      enableReminders: true,
-      stock: 30,
-    });
-  };
-
-  const handleEdit = (med) => {
-    setEditingMed(med.id);
-    setNewMed(med);
-    setShowForm(true);
-  };
-
-  const handleDelete = (id) => {
-    setMedications(medications.filter((med) => med.id !== id));
-  };
+const App = () => {
+  const [selectedDate, setSelectedDate] = useState("2025-03-01");
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-blue-800">
-          Medication Schedule
-        </h2>
+    <div className="bg-gray-100 min-h-screen p-4">
+      <div className="flex justify-between items-center border-2 border-black rounded-lg p-2 m-2 overflow-x-auto">
         <button
-          onClick={() => {
-            setShowForm(true);
-            setEditingMed(null);
-            setNewMed({
-              name: "",
-              dosage: "",
-              frequency: "Daily",
-              time: "",
-              enableReminders: true,
-              stock: 30,
-            });
-          }}
-          className="bg-blue-600 text-white p-2 rounded-full"
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/pharmacy" ? "text-blue-600" : ""
+          }`}
+          onClick={() => navigate("/pharmacy")}
         >
-          <Plus size={20} />
+          Pharmacy
+        </button>
+        <button
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/profile" ? "text-blue-600" : ""
+          }`}
+          onClick={() => navigate("/profile")}
+        >
+          Profile
+        </button>
+        <button
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/settings" ? "text-blue-600" : ""
+          }`}
+          onClick={() => navigate("/settings")}
+        >
+          Settings
+        </button>
+        <button
+          className={`font-bold whitespace-nowrap px-2 md:px-4 ${
+            location.pathname === "/help" ? "text-blue-600" : ""
+          }`}
+          onClick={() => navigate("/help")}
+        >
+          Help
         </button>
       </div>
 
-      {/* Medication Form */}
-      {showForm && (
-        <div className="bg-white p-4 rounded-lg shadow-md border border-blue-200">
-          <h3 className="text-lg font-medium text-blue-700 mb-4">
-            {editingMed ? "Edit Medication" : "Add New Medication"}
-          </h3>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Medicine Name
-              </label>
-              <input
-                type="text"
-                value={newMed.name}
-                onChange={(e) => setNewMed({ ...newMed, name: e.target.value })}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Dosage (mg/ml)
-              </label>
-              <input
-                type="text"
-                value={newMed.dosage}
-                onChange={(e) =>
-                  setNewMed({ ...newMed, dosage: e.target.value })
-                }
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Frequency
-              </label>
-              <select
-                value={newMed.frequency}
-                onChange={(e) =>
-                  setNewMed({ ...newMed, frequency: e.target.value })
-                }
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option>Daily</option>
-                <option>Twice Daily</option>
-                <option>Three Times Daily</option>
-                <option>Weekly</option>
-                <option>As Needed</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Time(s) for Reminder
-              </label>
-              <input
-                type="text"
-                value={newMed.time}
-                onChange={(e) => setNewMed({ ...newMed, time: e.target.value })}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                placeholder="08:00,20:00 (for multiple times)"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Current Stock (Pills/Units)
-              </label>
-              <input
-                type="number"
-                value={newMed.stock}
-                onChange={(e) =>
-                  setNewMed({ ...newMed, stock: parseInt(e.target.value) })
-                }
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="enableReminders"
-                checked={newMed.enableReminders}
-                onChange={(e) =>
-                  setNewMed({ ...newMed, enableReminders: e.target.checked })
-                }
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="enableReminders"
-                className="ml-2 text-sm text-gray-700"
-              >
-                Enable Reminders
-              </label>
-            </div>
-
-            <div className="flex justify-end space-x-2">
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md"
-              >
-                {editingMed ? "Update" : "Add"} Medication
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {/* Medications List */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-blue-100">
-        <h3 className="font-medium text-blue-700 mb-3">
-          Scheduled Medications
-        </h3>
-        {medications.length === 0 ? (
-          <p className="text-gray-500 text-center py-4">
-            No medications scheduled
-          </p>
-        ) : (
-          <div className="space-y-4">
-            {medications.map((med) => (
-              <div key={med.id} className="border-b border-blue-100 pb-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-medium">
-                      {med.name} • {med.dosage}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {med.frequency} • {med.time}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Stock: {med.stock} remaining
-                    </p>
-                  </div>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleEdit(med)}
-                      className="p-1 text-blue-600"
-                    >
-                      <Edit size={16} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(med.id)}
-                      className="p-1 text-red-600"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+      {/* Main Content */}
+      <div className="max-w-5xl mx-auto w-full px-4 py-6 overflow-auto bg-white rounded-lg shadow">
+        {/* Schedule Section */}
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-xl font-semibold">Schedule</h1>
           </div>
-        )}
+
+          {/* Calendar */}
+          <div className="mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <button className="p-2 border rounded hover:bg-gray-100">
+                ←
+              </button>
+              <h2 className="text-xl font-bold">March 2025</h2>
+              <button className="p-2 border rounded hover:bg-gray-100">
+                →
+              </button>
+            </div>
+
+            {/* Weekdays */}
+            <div className="grid grid-cols-7 gap-1 mb-1">
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+                <div key={day} className="text-center font-medium p-2">
+                  {day}
+                </div>
+              ))}
+            </div>
+
+            {/* Calendar Days */}
+            <div className="grid grid-cols-7 gap-1">
+              {[...Array(31).keys()].map((num) => {
+                const day = num + 1;
+                const dateKey = `2025-03-${day.toString().padStart(2, "0")}`;
+                return (
+                  <div
+                    key={day}
+                    className={`p-3 border h-14 cursor-pointer relative ${
+                      selectedDate === dateKey
+                        ? "bg-blue-100 border-blue-500 border-2"
+                        : ""
+                    }`}
+                    onClick={() => setSelectedDate(dateKey)}
+                  >
+                    <div>{day}</div>
+                    {medicationData[dateKey] && (
+                      <div className="w-2 h-2 bg-blue-500 rounded-full absolute bottom-1 right-1"></div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Medication List */}
+          <div className="mt-4 p-4 border rounded">
+            <h3 className="font-bold text-lg mb-2">
+              Medications for {selectedDate}
+            </h3>
+            <ul>
+              {medicationData[selectedDate] ? (
+                medicationData[selectedDate].map((med, index) => (
+                  <li key={index} className="p-2 bg-gray-100 rounded mb-2">
+                    <div className="font-medium">{med.name}</div>
+                    <div className="text-sm text-gray-600">
+                      {med.time} - {med.dosage}
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li className="p-2 bg-gray-100 rounded">
+                  No medications scheduled.
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
       </div>
 
-      {/* Calendar View (Simplified) */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-blue-100">
-        <h3 className="font-medium text-blue-700 mb-3">Calendar View</h3>
-        <div className="text-center text-gray-500">
-          Calendar visualization would appear here
-        </div>
+      <div className="flex justify-between px-4 pb-4 mt-auto">
+        <button
+          className={`border-2 border-black rounded-lg py-2 px-2 md:px-4 w-1/2 mr-2 font-bold ${
+            location.pathname === "/" || location.pathname === "/dashboard"
+              ? "bg-gray-200"
+              : ""
+          }`}
+          onClick={() => navigate("/dashboard")}
+        >
+          Dashboard
+        </button>
+        <button
+          className={`border-2 border-black rounded-lg py-2 px-2 md:px-4 w-1/2 ml-2 font-bold ${
+            location.pathname === "/schedule" ? "bg-gray-200" : ""
+          }`}
+          onClick={() => navigate("/schedule")}
+        >
+          📜 Export to Sheets
+        </button>
       </div>
     </div>
   );
 };
 
-export default SchedulePage;
+export default App;
